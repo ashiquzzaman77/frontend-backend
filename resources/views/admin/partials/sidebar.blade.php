@@ -119,6 +119,28 @@
 
         {{-- Role & Permission  --}}
 
+        {{-- Hr & Admin Section  --}}
+
+        {{-- @if (Auth::guard('admin')->user()->can('role.menu')) --}}
+        <li class="menu-label">Hr & Admin Section</li>
+        <li>
+            <a class="has-arrow" href="javascript:;">
+                <div class="parent-icon"><i class='bx bx-message-square-edit'></i>
+                </div>
+                <div class="menu-title">Hr Section</div>
+            </a>
+            <ul>
+                {{-- @if (Auth::guard('admin')->user()->can('all.role')) --}}
+                <li> <a href="{{ route('admin.employee.index') }}"><i class='bx bx-radio-circle'></i>Employee</a>
+                </li>
+                {{-- @endif --}}
+
+            </ul>
+        </li>
+        {{-- @endif --}}
+
+        {{-- Hr & Admin Section  --}}
+
         {{-- Other Section --}}
         <li class="menu-label">Other Section</li>
         <li>

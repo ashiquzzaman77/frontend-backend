@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\ContactController;
+use App\Http\Controllers\Admin\EmployeeController;
 use App\Http\Controllers\Admin\MetaController;
 use App\Http\Controllers\Admin\MultiImageController;
 use App\Http\Controllers\Admin\ProjectController;
@@ -137,12 +138,12 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
             'banner' => BannerController::class,
             'project' => ProjectController::class,
             'multiImage' => MultiImageController::class,
-
             'about' => AboutController::class,
 
             'team'   => TeamController::class,
             'testimonial' => TestimonialController::class,
             'contact' => ContactController::class,
+            'employee' => EmployeeController::class,
 
         ],
 
