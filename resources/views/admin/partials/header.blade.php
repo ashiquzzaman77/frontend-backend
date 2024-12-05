@@ -5,7 +5,7 @@
             </div>
 
             <div class="btn btn-primary border-0 rounded-0" style="background: linear-gradient(45deg, #01294e, #0d0d61);">
-                <a href="" class="text-light px-4 border-0">Fronted</a>
+                <a href="{{ route('frontend.index') }}" target="blank" class="text-light px-4 border-0">Fronted</a>
             </div>
 
 
