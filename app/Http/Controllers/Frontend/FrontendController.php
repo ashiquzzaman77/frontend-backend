@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use App\Models\Team;
+use App\Http\Controllers\Controller;
 use App\Models\About;
 use App\Models\Banner;
 use App\Models\Contact;
+use App\Models\Project;
+use App\Models\Team;
 use App\Models\Testimonial;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 
 class FrontendController extends Controller
@@ -20,9 +21,10 @@ class FrontendController extends Controller
         $banner = Banner::where('status', 'active')->latest('id')->first();
         $about = About::where('status', 'active')->latest('id')->first();
         $teams = Team::where('status', 'active')->latest()->limit('3')->get();
+        $projects = Project::where('status', 'active')->latest()->limit('4')->get();
         $testimonials = Testimonial::where('status', 'active')->latest()->limit('5')->get();
 
-        return view('frontend.index', compact('banner', 'about', 'teams', 'testimonials'));
+        return view('frontend.index', compact('banner', 'about', 'teams', 'projects', 'testimonials'));
     }
 
     //All Team
@@ -30,6 +32,13 @@ class FrontendController extends Controller
     {
         $teams = Team::where('status', 'active')->latest()->get();
         return view('frontend.pages.allteam', compact('teams'));
+    }
+
+    //project Show
+    public function projectShow($slug)
+    {
+        $project = Project::where('slug', $slug)->firstOrFail();
+        return view('frontend.pages.project_show', compact('project'));
     }
 
     //All Contact
@@ -82,7 +91,6 @@ class FrontendController extends Controller
 
             // Save the contact record
             $contact->save();
-
 
             // Commit the transaction
             DB::commit();
