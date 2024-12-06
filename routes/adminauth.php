@@ -1,8 +1,14 @@
 <?php
 
+use App\Http\Controllers\AdminAuth\AuthenticatedSessionController;
+use App\Http\Controllers\AdminAuth\ConfirmablePasswordController;
+use App\Http\Controllers\AdminAuth\EmailVerificationNotificationController;
+use App\Http\Controllers\AdminAuth\EmailVerificationPromptController;
+use App\Http\Controllers\AdminAuth\NewPasswordController;
+use App\Http\Controllers\AdminAuth\PasswordController;
+use App\Http\Controllers\AdminAuth\PasswordResetLinkController;
+use App\Http\Controllers\AdminAuth\VerifyEmailController;
 use App\Http\Controllers\Admin\AboutController;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\ContactController;
@@ -10,18 +16,11 @@ use App\Http\Controllers\Admin\EmployeeController;
 use App\Http\Controllers\Admin\MetaController;
 use App\Http\Controllers\Admin\MultiImageController;
 use App\Http\Controllers\Admin\ProjectController;
+use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\TeamController;
 use App\Http\Controllers\Admin\TestimonialController;
-use App\Http\Controllers\AdminAuth\PasswordController;
-use App\Http\Controllers\AdminAuth\NewPasswordController;
-use App\Http\Controllers\AdminAuth\VerifyEmailController;
-use App\Http\Controllers\AdminAuth\PasswordResetLinkController;
-use App\Http\Controllers\AdminAuth\ConfirmablePasswordController;
-use App\Http\Controllers\AdminAuth\AuthenticatedSessionController;
-
-use App\Http\Controllers\AdminAuth\EmailVerificationPromptController;
-use App\Http\Controllers\AdminAuth\EmailVerificationNotificationController;
+use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest:admin')->group(function () {
 
@@ -66,7 +65,6 @@ Route::middleware('auth:admin')->group(function () {
         ->name('admin.logout');
 });
 
-
 //Admin DashBOard
 Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(function () {
 
@@ -84,7 +82,6 @@ Route::middleware(['auth:admin', 'verified'])->group(function () {
     Route::get('/admin-password', [AdminController::class, 'AdminPasswordPage'])->name('admin.password.page');
     Route::post('/admin/password/update/submit', [AdminController::class, 'AdminPasswordUpdateSubmit'])->name('admin.password.update.submit');
 });
-
 
 // Role In Permission
 Route::middleware(['auth:admin'])->group(function () {
@@ -129,7 +126,6 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::post('/admin/team/sendEmail', [TeamController::class, 'sendEmail'])->name('admin.team.sendEmail');
 });
 
-
 Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(function () {
 
     //Crud Operation
@@ -137,10 +133,9 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
         [
             'banner' => BannerController::class,
             'project' => ProjectController::class,
-            'multiImage' => MultiImageController::class,
             'about' => AboutController::class,
 
-            'team'   => TeamController::class,
+            'team' => TeamController::class,
             'testimonial' => TestimonialController::class,
             'contact' => ContactController::class,
             'employee' => EmployeeController::class,

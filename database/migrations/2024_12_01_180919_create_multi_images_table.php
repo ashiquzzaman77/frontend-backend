@@ -20,8 +20,8 @@ return new class extends Migration
             $table->unsignedBigInteger('project_id')->nullable();
             $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
 
-            $table->longText('multi_image')->nullable();
-            $table->string('status')->nullable();
+            $table->string('multi_image')->nullable();
+            // $table->string('status')->nullable();
 
             $table->timestamps();
         });

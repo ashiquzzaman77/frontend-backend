@@ -36,10 +36,10 @@
                     @method('PUT')
 
                     <div class="row">
-
+                        <!-- Status Field -->
                         <div class="col-6 col-lg-2 mb-3">
                             <label for="" class="mb-2">Status</label>
-                            <select name="status" class="form-select" id="">
+                            <select name="status" class="form-select">
                                 <option selected disabled>Choose Option...</option>
                                 <option value="active" {{ $item->status == 'active' ? 'selected' : '' }}>Active</option>
                                 <option value="inactive" {{ $item->status == 'inactive' ? 'selected' : '' }}>Inactive
@@ -47,23 +47,26 @@
                             </select>
                         </div>
 
+                        <!-- Name Field -->
                         <div class="col-6 col-lg-4 mb-3">
                             <label for="" class="mb-2">Name</label>
                             <input type="text" class="form-control" placeholder="Project Name" name="name"
                                 value="{{ old('name', $item->name) }}">
                         </div>
 
+                        <!-- Short Description Field -->
                         <div class="col-6 col-lg-12 mb-3">
                             <label for="" class="mb-2">Short Description</label>
-                            <textarea name="short_descp" placeholder="Short Description" id="" cols="3" rows="3"
-                                class="form-control">{{ old('short_descp', $item->short_descp) }}</textarea>
+                            <textarea name="short_descp" placeholder="Short Description" cols="3" rows="3" class="form-control">{{ old('short_descp', $item->short_descp) }}</textarea>
                         </div>
 
+                        <!-- Long Description Field -->
                         <div class="col-6 col-lg-12 mb-3">
                             <label for="" class="mb-2">Long Description</label>
-                            <textarea name="long_descp" placeholder="Long Description" id="" cols="10" rows="10" class="editor">{!! old('long_descp', $item->long_descp) !!}</textarea>
+                            <textarea name="long_descp" placeholder="Long Description" cols="10" rows="10" class="editor">{!! old('long_descp', $item->long_descp) !!}</textarea>
                         </div>
 
+                        <!-- Image Field -->
                         <div class="col-6 col-lg-3 mb-3">
                             <label for="" class="mb-2">Image</label>
                             <input type="file" class="form-control" name="image" id="imageInput">
@@ -73,25 +76,47 @@
                                 <img id="imagePreview" src="#" alt="Image Preview"
                                     style="display: none; width: 30%; height: auto;" />
                             </div>
-
                         </div>
 
-                        <div class="col-6 col-lg-3 mb-3">
+                        <!-- Current Image Display -->
+                        <div class="col-6 col-lg-1 mb-3">
                             <label for="" class="mb-2">Current Image</label>
                             <div>
                                 <img src="{{ !empty($item->image) ? url('storage/' . $item->image) : 'https://ui-avatars.com/api/?name=' . urlencode($item->name) }}"
-                                    style="width: 100px;height: 100px;" alt="">
+                                    style="width: 80px; height: 80px;" alt="Current Image">
                             </div>
-
                         </div>
 
+                        <!-- Multi Image Field -->
+                        <div class="col-6 col-lg-3 mb-3">
+                            <label for="" class="mb-2">Multi Image</label>
+                            <input type="file" class="form-control" name="multi_image[]" multiple>
+                        </div>
+
+                        <!-- Current Multi Image Display -->
+                        <div class="col-6 col-lg-5 mb-3">
+                            <label for="" class="mb-2">Current Multi Image</label>
+                            <div>
+                                @foreach ($multiImages as $multiImage)
+                                    <div class="multi-image-item">
+                                        <input type="hidden" name="multi_image_id[{{ $multiImage->id }}]"
+                                            value="{{ $multiImage->id }}">
+                                        <img src="{{ url('storage/' . $multiImage->multi_image) }}"
+                                            style="width: 80px; height: 80px;" class="me-2 mb-2" alt="Multi Image">
+                                        <input type="file" name="multi_image[{{ $multiImage->id }}]">
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
                         <div class="col-12 col-lg-12 mb-3">
                             <button type="submit" class="btn btn-outline-primary rounded-0 px-3 float-end">Update
                                 Data</button>
                         </div>
-
                     </div>
                 </form>
+
 
             </div>
         </div>

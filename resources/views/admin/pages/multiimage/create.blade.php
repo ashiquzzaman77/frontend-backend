@@ -57,18 +57,7 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-                        
-                        {{-- <div class="mb-4">
-                            <label for="single-select-field" class="form-label">Basic single select</label>
-                            <select class="form-select" >
-                                <option></option>
-                                <option>Reactive</option>
-                                <option>Solution</option>
-                                <option>Conglomeration</option>
-                                <option>Algoritm</option>
-                                <option>Holistic</option>
-                            </select>
-                        </div> --}}
+                      
 
                         <div class="col-6 col-lg-6 mb-3"></div>
 

@@ -70,6 +70,11 @@
                             </div>
                         </div>
 
+                        <div class="col-3 col-lg-3 mb-3">
+                            <label for="" class="mb-2">Multi Image</label>
+                            <input type="file" class="form-control" name="multi_image[]" multiple>
+                        </div>
+
                         <div class="col-12 col-lg-12 mb-3">
                             <button type="submit" class="btn btn-outline-primary rounded-0 px-3 float-end">Data
                                 Submit</button>
