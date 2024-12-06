@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\About;
 use App\Models\Banner;
 use App\Models\Contact;
+use App\Models\MultiImage;
 use App\Models\Project;
 use App\Models\Team;
 use App\Models\Testimonial;
@@ -38,7 +39,9 @@ class FrontendController extends Controller
     public function projectShow($slug)
     {
         $project = Project::where('slug', $slug)->firstOrFail();
-        return view('frontend.pages.project_show', compact('project'));
+        $multiImages = MultiImage::where('project_id', $project->id)->get();
+
+        return view('frontend.pages.project_show', compact('project', 'multiImages'));
     }
 
     //All Contact
