@@ -72,7 +72,10 @@
 
                         <div class="col-3 col-lg-3 mb-3">
                             <label for="" class="mb-2">Multi Image</label>
-                            <input type="file" class="form-control" name="multi_image[]" multiple>
+                            <input type="file" class="form-control" name="multi_image[]" id="multiImageInput"
+                                multiple>
+                            <div id="multiImagePreview" class="mt-2"></div>
+                            <!-- Container for multiple image previews -->
                         </div>
 
                         <div class="col-12 col-lg-12 mb-3">
@@ -89,7 +92,7 @@
     </div>
 
     <script>
-        // JavaScript for image preview
+        // JavaScript for single image preview
         document.getElementById('imageInput').addEventListener('change', function(event) {
             const file = event.target.files[0];
             const preview = document.getElementById('imagePreview');
@@ -100,10 +103,40 @@
                 reader.onload = function(e) {
                     preview.src = e.target.result; // Set the preview image source to the file's data URL
                     preview.style.display = 'block'; // Show the preview image
+
+                    // Set the width and height of the image preview
+                    preview.style.width = '80px'; // Example: Width 100% of the container
+                    preview.style.height = '80px'; // Maintain aspect ratio based on the width
                 };
                 reader.readAsDataURL(file); // Read the file as a data URL
             } else {
                 preview.style.display = 'none'; // Hide the preview if no file is selected
+            }
+        });
+
+        // JavaScript for multiple image preview
+        document.getElementById('multiImageInput').addEventListener('change', function(event) {
+            const files = event.target.files;
+            const previewContainer = document.getElementById('multiImagePreview');
+
+            // Clear previous previews
+            previewContainer.innerHTML = '';
+
+            // Loop through each selected file
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const reader = new FileReader();
+
+                // Create an image element for each file
+                reader.onload = function(e) {
+                    const imgElement = document.createElement('img');
+                    imgElement.src = e.target.result; // Set the image source
+                    imgElement.style.width = '80px'; // Set image width
+                    imgElement.style.height = '80px'; // Maintain aspect ratio
+                    imgElement.style.marginRight = '10px'; // Space between images
+                    previewContainer.appendChild(imgElement); // Append the image to the preview container
+                };
+                reader.readAsDataURL(file); // Read the file as a data URL
             }
         });
     </script>

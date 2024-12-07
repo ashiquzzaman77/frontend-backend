@@ -67,10 +67,20 @@
                         </div>
 
                         <!-- Image Field -->
-                        <div class="col-6 col-lg-3 mb-3">
+                        {{-- <div class="col-6 col-lg-3 mb-3">
                             <label for="" class="mb-2">Image</label>
                             <input type="file" class="form-control" name="image" id="imageInput">
 
+                            <div class="mt-2">
+                                <!-- Image Preview -->
+                                <img id="imagePreview" src="#" alt="Image Preview"
+                                    style="display: none; width: 30%; height: auto;" />
+                            </div>
+                        </div> --}}
+
+                        <div class="col-3 col-lg-3 mb-3">
+                            <label for="" class="mb-2">Image</label>
+                            <input type="file" class="form-control" name="image" id="imageInput">
                             <div class="mt-2">
                                 <!-- Image Preview -->
                                 <img id="imagePreview" src="#" alt="Image Preview"
@@ -88,9 +98,17 @@
                         </div>
 
                         <!-- Multi Image Field -->
-                        <div class="col-6 col-lg-3 mb-3">
+                        {{-- <div class="col-6 col-lg-3 mb-3">
                             <label for="" class="mb-2">Multi Image</label>
                             <input type="file" class="form-control" name="multi_image[]" multiple>
+                        </div> --}}
+
+                        <div class="col-3 col-lg-3 mb-3">
+                            <label for="" class="mb-2">Multi Image</label>
+                            <input type="file" class="form-control" name="multi_image[]" id="multiImageInput"
+                                multiple>
+                            <div id="multiImagePreview" class="mt-2"></div>
+                            <!-- Container for multiple image previews -->
                         </div>
 
                         <!-- Current Multi Image Display -->
@@ -101,13 +119,25 @@
                                     <div class="multi-image-item">
                                         <input type="hidden" name="multi_image_id[{{ $multiImage->id }}]"
                                             value="{{ $multiImage->id }}">
+
+                                        <!-- Image Display -->
                                         <img src="{{ url('storage/' . $multiImage->multi_image) }}"
                                             style="width: 80px; height: 80px;" class="me-2 mb-2" alt="Multi Image">
+
+                                        <!-- Input for new image upload -->
                                         <input type="file" name="multi_image[{{ $multiImage->id }}]">
+
+                                        <!-- Delete Checkbox or Button -->
+                                        <label>
+                                            <input type="checkbox" name="delete_multi_image[{{ $multiImage->id }}]"
+                                                value="1">
+                                            Delete
+                                        </label>
                                     </div>
                                 @endforeach
                             </div>
                         </div>
+
 
                         <!-- Submit Button -->
                         <div class="col-12 col-lg-12 mb-3">
@@ -124,7 +154,7 @@
     </div>
 
     <script>
-        // JavaScript for image preview
+        // JavaScript for single image preview
         document.getElementById('imageInput').addEventListener('change', function(event) {
             const file = event.target.files[0];
             const preview = document.getElementById('imagePreview');
@@ -135,10 +165,40 @@
                 reader.onload = function(e) {
                     preview.src = e.target.result; // Set the preview image source to the file's data URL
                     preview.style.display = 'block'; // Show the preview image
+
+                    // Set the width and height of the image preview
+                    preview.style.width = '80px'; // Example: Width 100% of the container
+                    preview.style.height = '80px'; // Maintain aspect ratio based on the width
                 };
                 reader.readAsDataURL(file); // Read the file as a data URL
             } else {
                 preview.style.display = 'none'; // Hide the preview if no file is selected
+            }
+        });
+
+        // JavaScript for multiple image preview
+        document.getElementById('multiImageInput').addEventListener('change', function(event) {
+            const files = event.target.files;
+            const previewContainer = document.getElementById('multiImagePreview');
+
+            // Clear previous previews
+            previewContainer.innerHTML = '';
+
+            // Loop through each selected file
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const reader = new FileReader();
+
+                // Create an image element for each file
+                reader.onload = function(e) {
+                    const imgElement = document.createElement('img');
+                    imgElement.src = e.target.result; // Set the image source
+                    imgElement.style.width = '80px'; // Set image width
+                    imgElement.style.height = '80px'; // Maintain aspect ratio
+                    imgElement.style.marginRight = '10px'; // Space between images
+                    previewContainer.appendChild(imgElement); // Append the image to the preview container
+                };
+                reader.readAsDataURL(file); // Read the file as a data URL
             }
         });
     </script>

@@ -162,12 +162,32 @@ class ProjectController extends Controller
 
     //     // Handle multi-image upload
     //     if ($request->hasFile('multi_image')) {
-    //         // Delete old multi images from the MultiImage table
-    //         MultiImage::where('project_id', $item->id)->delete();
+    //         // Handle each specific multi-image (we assume each multi-image has an 'id' in the request)
+    //         foreach ($request->file('multi_image') as $index => $file) {
+    //             $multiImageId = $request->input("multi_image_id.{$index}"); // Get the multi-image ID from the input
+    //             if ($multiImageId) {
+    //                 // Find the existing multi-image entry by ID
+    //                 $existingMultiImage = MultiImage::where('id', $multiImageId)->where('project_id', $item->id)->first();
 
-    //         foreach ($request->file('multi_image') as $file) {
-    //             if ($file) {
-    //                 // Define file path for multi-image
+    //                 if ($existingMultiImage) {
+    //                     // Delete the old file from storage
+    //                     Storage::delete("public/" . $existingMultiImage->multi_image);
+
+    //                     // Upload the new file and update the specific multi-image entry
+    //                     $filePath = 'Project/multi_image';
+    //                     $uploadResult = newUpload($file, $filePath);
+
+    //                     if ($uploadResult['status'] === 0) {
+    //                         return redirect()->back()->with('error', $uploadResult['error_message']);
+    //                     }
+
+    //                     // Update the multi-image record with the new file path
+    //                     $existingMultiImage->update([
+    //                         'multi_image' => $uploadResult['file_path'],
+    //                     ]);
+    //                 }
+    //             } else {
+    //                 // If no multi-image ID is provided, it's treated as a new multi-image
     //                 $filePath = 'Project/multi_image';
     //                 $uploadResult = newUpload($file, $filePath);
 
@@ -175,17 +195,12 @@ class ProjectController extends Controller
     //                     return redirect()->back()->with('error', $uploadResult['error_message']);
     //                 }
 
-    //                 // Store the uploaded multi image path in the array
-    //                 $multiImages[] = $uploadResult['file_path'];
+    //                 // Save the new multi-image record in the database
+    //                 MultiImage::create([
+    //                     'project_id' => $item->id,
+    //                     'multi_image' => $uploadResult['file_path'],
+    //                 ]);
     //             }
-    //         }
-
-    //         // Save each uploaded multi image path in the MultiImage table
-    //         foreach ($multiImages as $imagePath) {
-    //             MultiImage::create([
-    //                 'project_id' => $item->id,
-    //                 'multi_image' => $imagePath,
-    //             ]);
     //         }
     //     }
 
@@ -241,20 +256,33 @@ class ProjectController extends Controller
             }
         }
 
-        // Handle multi-image upload
-        if ($request->hasFile('multi_image')) {
-            // Handle each specific multi-image (we assume each multi-image has an 'id' in the request)
-            foreach ($request->file('multi_image') as $index => $file) {
-                $multiImageId = $request->input("multi_image_id.{$index}"); // Get the multi-image ID from the input
-                if ($multiImageId) {
-                    // Find the existing multi-image entry by ID
-                    $existingMultiImage = MultiImage::where('id', $multiImageId)->where('project_id', $item->id)->first();
+        // Handle multi-image deletion
+        if ($request->has('delete_multi_image')) {
+            foreach ($request->input('delete_multi_image') as $multiImageId => $value) {
+                $multiImage = MultiImage::where('id', $multiImageId)->where('project_id', $item->id)->first();
+                if ($multiImage) {
+                    // Delete the old file from storage
+                    Storage::delete("public/" . $multiImage->multi_image);
 
+                    // Delete the multi-image record from the database
+                    $multiImage->delete();
+                }
+            }
+        }
+
+        // Handle multi-image upload or update
+        if ($request->hasFile('multi_image')) {
+            foreach ($request->file('multi_image') as $index => $file) {
+                $multiImageId = $request->input("multi_image_id.{$index}");
+
+                if ($multiImageId) {
+                    // Update existing multi-image
+                    $existingMultiImage = MultiImage::where('id', $multiImageId)->where('project_id', $item->id)->first();
                     if ($existingMultiImage) {
                         // Delete the old file from storage
                         Storage::delete("public/" . $existingMultiImage->multi_image);
 
-                        // Upload the new file and update the specific multi-image entry
+                        // Upload the new file
                         $filePath = 'Project/multi_image';
                         $uploadResult = newUpload($file, $filePath);
 
@@ -268,7 +296,7 @@ class ProjectController extends Controller
                         ]);
                     }
                 } else {
-                    // If no multi-image ID is provided, it's treated as a new multi-image
+                    // Handle the new multi-image upload
                     $filePath = 'Project/multi_image';
                     $uploadResult = newUpload($file, $filePath);
 
@@ -276,7 +304,7 @@ class ProjectController extends Controller
                         return redirect()->back()->with('error', $uploadResult['error_message']);
                     }
 
-                    // Save the new multi-image record in the database
+                    // Create the new multi-image record
                     MultiImage::create([
                         'project_id' => $item->id,
                         'multi_image' => $uploadResult['file_path'],
@@ -297,7 +325,6 @@ class ProjectController extends Controller
         // Return to the project index page with a success message
         return redirect()->route('admin.project.index')->with('success', 'Data Updated Successfully!');
     }
-
     /**
      * Remove the specified resource from storage.
      */
@@ -329,5 +356,4 @@ class ProjectController extends Controller
         // Redirect with a success message
         return redirect()->route('admin.project.index')->with('success', 'Project deleted successfully!');
     }
-
 }
