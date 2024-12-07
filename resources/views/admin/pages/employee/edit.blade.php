@@ -129,7 +129,11 @@
 
                         <div class="col-3 col-lg-3 mb-3">
                             <label for="" class="mb-2">Image</label>
-                            <input type="file" class="form-control" name="image" id="imageInput">
+                            <input type="file" class="form-control @error('image') is-invalid @enderror"
+                                name="image" id="imageInput">
+                            @error('image')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                             <div class="mt-2">
                                 <!-- Image Preview -->
                                 <img id="imagePreview" src="#" alt="Image Preview"
@@ -148,7 +152,11 @@
 
                         <div class="col-3 col-lg-3 mb-3">
                             <label for="" class="mb-2">Last Certificate</label>
-                            <input type="file" class="form-control" name="document">
+                            <input type="file" class="form-control @error('document') is-invalid @enderror"
+                                name="document">
+                            @error('document')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
 
                         <div class="col-6 col-lg-1 mb-3">
@@ -157,6 +165,7 @@
                                 src="{{ !empty($item->document) ? url('storage/' . $item->document) : 'https://ui-avatars.com/api/?name=' . urlencode($item->name) }}"
                                 style="width: 100px; height: 100px; border: none;" frameborder="0" scrolling="no">
                             </iframe>
+
 
                         </div>
 

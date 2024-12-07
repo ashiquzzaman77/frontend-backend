@@ -36,8 +36,8 @@
 
                         <div class="col-6 col-lg-3 mb-3">
                             <label for="" class="mb-2">Name</label>
-                            <input type="text" class="form-control" required placeholder="Employee Name" name="name"
-                                value="{{ old('name') }}">
+                            <input type="text" class="form-control" required placeholder="Employee Name"
+                                name="name" value="{{ old('name') }}">
                         </div>
 
                         <div class="col-6 col-lg-3 mb-3">
@@ -54,8 +54,8 @@
 
                         <div class="col-6 col-lg-3 mb-3">
                             <label for="" class="mb-2">Nid Number</label>
-                            <input type="number" class="form-control" required placeholder="Nid Number" name="nid_number"
-                                value="{{ old('nid_number') }}">
+                            <input type="number" class="form-control" required placeholder="Nid Number"
+                                name="nid_number" value="{{ old('nid_number') }}">
                         </div>
 
                         <div class="col-6 col-lg-3 mb-3">
@@ -122,7 +122,11 @@
 
                         <div class="col-3 col-lg-3 mb-3">
                             <label for="" class="mb-2">Image</label>
-                            <input type="file" class="form-control" name="image" id="imageInput">
+                            <input type="file" class="form-control @error('image') is-invalid @enderror"
+                                name="image" id="imageInput">
+                            @error('image')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                             <div class="mt-2">
                                 <!-- Image Preview -->
                                 <img id="imagePreview" src="#" alt="Image Preview"
@@ -132,8 +136,13 @@
 
                         <div class="col-3 col-lg-3 mb-3">
                             <label for="" class="mb-2">Last Certificate</label>
-                            <input type="file" class="form-control" required name="document">
+                            <input type="file" class="form-control @error('document') is-invalid @enderror"
+                                name="document" required>
+                            @error('document')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
+
 
                         <div class="col-12 col-lg-12 mb-3">
                             <button type="submit" class="btn btn-outline-primary rounded-0 px-3 float-end">Data
