@@ -34,7 +34,20 @@ class AdminController extends Controller
     //Admin DashBoard
     public function dashboard()
     {
-        return view('admin.dashboard');
+
+        $id = Auth::guard('admin')->user()->id;
+        $data = Admin::find($id);
+
+        // Check if the admin's status is active
+        if ($data->status == 'active') {
+
+            return view('admin.dashboard');
+        }
+
+        // If the admin is active, show the dashboard
+        return redirect()->back()->with('error', 'Your account is inactive. Please contact support.');
+
+        // return view('admin.dashboard');
     }
 
     //AdminProfile
@@ -45,7 +58,7 @@ class AdminController extends Controller
 
         $roles = Role::latest()->get();
 
-        return view('admin.pages.profile.admin_profile', compact('profileData','roles'));
+        return view('admin.pages.profile.admin_profile', compact('profileData', 'roles'));
     }
 
     //AdminProfileUpdate
@@ -83,7 +96,7 @@ class AdminController extends Controller
 
         $roles = Role::latest()->get();
 
-        return view('admin.pages.profile.admin_password', compact('profileData','roles'));
+        return view('admin.pages.profile.admin_password', compact('profileData', 'roles'));
     }
 
     //Admin Password Update
@@ -112,5 +125,4 @@ class AdminController extends Controller
 
         return redirect()->back()->with('success', 'Password Successfully Updated');
     }
-
 }

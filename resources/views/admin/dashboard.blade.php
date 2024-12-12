@@ -96,6 +96,4 @@
         </div>
     @endif
 
-
-
 </x-admin-app-layout>
