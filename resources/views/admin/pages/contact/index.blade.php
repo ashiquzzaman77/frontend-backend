@@ -54,8 +54,7 @@
                                     </td>
 
                                     <td>
-                                        <a href="{{ route('admin.contact.edit', $item->id) }}"><i
-                                                class="fa-solid fa-pen-to-square fs-6 text-primary"></i></a>
+                                        
 
                                         <form action="{{ route('admin.contact.destroy', $item->id) }}" method="POST"
                                             style="display:inline;" class="delete-form">

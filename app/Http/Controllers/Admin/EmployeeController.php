@@ -103,6 +103,11 @@ class EmployeeController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $request->validate([
+            'image' => 'image|mimes:jpeg,png,jpg,gif|max:1024',
+            'document' => 'mimes:pdf,docx,doc|max:1024',
+        ]);
+
         $item = Employee::findOrFail($id);
 
         // Define upload paths
