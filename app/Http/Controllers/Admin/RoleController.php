@@ -45,7 +45,7 @@ class RoleController extends Controller
     {
         Role::find($id)->delete();
 
-        return redirect()->route('all.role');
+        return redirect()->route('all.role')->with('success', 'Role Delete Successfully!!');
     }
 
     // =============================== Permission =====================================
@@ -179,7 +179,7 @@ class RoleController extends Controller
     //Admin Permission
     public function AdminPermission()
     {
-        $users = Admin::get();
+        $users = Admin::where('status', 'active')->get();
         $roles = Role::latest()->get();
 
         return view('admin.pages.roles.admin.admin_permission', compact('users', 'roles'));

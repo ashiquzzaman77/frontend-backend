@@ -95,7 +95,7 @@
                                             </div>
                                         </div>
 
-                                        <a href="{{ route('delete.role', $role->id) }}" title="Delete" id="delete"><i
+                                        <a href="{{ route('delete.role', $role->id) }}" title="Delete" id=""><i
                                                 class="fa-solid fa-trash fs-6 text-danger"></i></a>
                                     </td>
 
