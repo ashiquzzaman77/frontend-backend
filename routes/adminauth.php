@@ -14,7 +14,6 @@ use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\EmployeeController;
 use App\Http\Controllers\Admin\MetaController;
-use App\Http\Controllers\Admin\MultiImageController;
 use App\Http\Controllers\Admin\ProjectController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SettingController;
@@ -126,6 +125,7 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::post('/admin/team/sendEmail', [TeamController::class, 'sendEmail'])->name('admin.team.sendEmail');
 });
 
+
 Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(function () {
 
     //Crud Operation
@@ -138,6 +138,7 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
             'team' => TeamController::class,
             'testimonial' => TestimonialController::class,
             'contact' => ContactController::class,
+            
             'employee' => EmployeeController::class,
 
         ],
