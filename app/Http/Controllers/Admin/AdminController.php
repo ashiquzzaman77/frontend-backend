@@ -57,10 +57,10 @@ class AdminController extends Controller
 
         $update->name = $request->name;
         $update->company_name = $request->company_name;
-        $update->email = $request->email;
+        // $update->email = $request->email;
         $update->phone = $request->phone;
         $update->address = $request->address;
-        $update->degination = $request->degination;
+        $update->designation = $request->designation;
 
         if ($request->file('photo')) {
             $file = $request->file('photo');

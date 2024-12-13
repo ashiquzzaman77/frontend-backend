@@ -22,8 +22,8 @@ return new class extends Migration
             $table->string('company_name')->nullable();
             $table->string('address')->nullable();
             $table->string('phone')->nullable();
-            $table->string('degination')->nullable();
-            $table->string('status')->nullable();
+            $table->string('designation')->nullable();
+            $table->string('status')->default('active');
             $table->string('photo')->nullable();
 
             $table->string('mail_status')->default('no_mail');
