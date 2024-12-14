@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\Message;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 
 class MessageController extends Controller
@@ -33,10 +33,10 @@ class MessageController extends Controller
     {
         // Validate the incoming request
         $request->validate([
-            'subject' => 'required|string|max:255',  // Subject is required and should be a string with a max length
-            'message' => 'required|string',  // Message is required and should be a string
+            'subject' => 'required|string|max:255', // Subject is required and should be a string with a max length
+            'message' => 'required|string', // Message is required and should be a string
             'file' => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx|max:2048',
-            'status' => 'nullable|in:active,inactive',  // Status is required and should be either 'active' or 'inactive'
+            'status' => 'nullable|in:active,inactive', // Status is required and should be either 'active' or 'inactive'
         ]);
 
         $uploadedFiles = [];
@@ -68,11 +68,9 @@ class MessageController extends Controller
             'file' => $uploadedFiles['file']['status'] == 1 ? $uploadedFiles['file']['file_path'] : null,
         ]);
 
-
         // Redirect with a success message
         return redirect()->route('admin.message.index')->with('success', 'Message sent successfully.');
     }
-
 
     /**
      * Display the specified resource.
@@ -97,10 +95,10 @@ class MessageController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'subject' => 'required|string|max:255',  // Subject is required and should be a string with a max length
-            'message' => 'required|string',  // Message is required and should be a string
+            'subject' => 'required|string|max:255', // Subject is required and should be a string with a max length
+            'message' => 'required|string', // Message is required and should be a string
             'file' => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx|max:2048',
-            'status' => 'nullable|in:active,inactive',  // Status is required and should be either 'active' or 'inactive'
+            'status' => 'nullable|in:active,inactive', // Status is required and should be either 'active' or 'inactive'
         ]);
 
         $item = Message::findOrFail($id);

@@ -126,22 +126,21 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::post('/admin/team/sendEmail', [TeamController::class, 'sendEmail'])->name('admin.team.sendEmail');
 });
 
-
 Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(function () {
 
     //Crud Operation
     Route::resources(
         [
-            'banner'    => BannerController::class,
-            'project'   => ProjectController::class,
-            'about'     => AboutController::class,
+            'banner' => BannerController::class,
+            'project' => ProjectController::class,
+            'about' => AboutController::class,
 
-            'team'      => TeamController::class,
+            'team' => TeamController::class,
             'testimonial' => TestimonialController::class,
-            'contact'   => ContactController::class,
+            'contact' => ContactController::class,
 
-            'employee'  => EmployeeController::class,
-            'message'   => MessageController::class,
+            'employee' => EmployeeController::class,
+            'message' => MessageController::class,
 
         ],
 
