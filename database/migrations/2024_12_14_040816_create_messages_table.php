@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('messages', function (Blueprint $table) {
             $table->id();
 
-            $table->string('file')->nullable();
+            // $table->string('file')->nullable();
             $table->text('subject')->nullable();
             $table->longText('message')->nullable();
-            $table->string('status')->nullable();
+            
 
             $table->timestamps();
         });
