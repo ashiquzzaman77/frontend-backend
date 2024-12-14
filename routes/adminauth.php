@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\EmployeeController;
+use App\Http\Controllers\Admin\MessageController;
 use App\Http\Controllers\Admin\MetaController;
 use App\Http\Controllers\Admin\ProjectController;
 use App\Http\Controllers\Admin\RoleController;
@@ -131,15 +132,16 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
     //Crud Operation
     Route::resources(
         [
-            'banner' => BannerController::class,
-            'project' => ProjectController::class,
-            'about' => AboutController::class,
+            'banner'    => BannerController::class,
+            'project'   => ProjectController::class,
+            'about'     => AboutController::class,
 
-            'team' => TeamController::class,
+            'team'      => TeamController::class,
             'testimonial' => TestimonialController::class,
-            'contact' => ContactController::class,
-            
-            'employee' => EmployeeController::class,
+            'contact'   => ContactController::class,
+
+            'employee'  => EmployeeController::class,
+            'message'   => MessageController::class,
 
         ],
 

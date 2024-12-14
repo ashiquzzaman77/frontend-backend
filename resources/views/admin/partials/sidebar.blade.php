@@ -141,6 +141,11 @@
                     </li>
                     {{-- @endif --}}
 
+                    {{-- @if (Auth::guard('admin')->user()->can('all.role')) --}}
+                    <li> <a href="{{ route('admin.message.index') }}"><i class='bx bx-radio-circle'></i>Message</a>
+                    </li>
+                    {{-- @endif --}}
+
                 </ul>
             </li>
             {{-- @endif --}}

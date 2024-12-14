@@ -1,4 +1,4 @@
-<x-admin-app-layout :title="'Banner'">
+<x-admin-app-layout :title="'Banner Create'">
 
     <div class="page-content">
 
