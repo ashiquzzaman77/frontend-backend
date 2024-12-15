@@ -33,33 +33,35 @@ class MessageController extends Controller
      * Store a newly created resource in storage.
      */
 
-     public function store(Request $request)
-     {
-         // Validate the incoming request
-         $request->validate([
-             'subject' => 'required|string|max:255',
-             'message' => 'required|string',
-         ]);
-     
-         // Prepare the data
-         $data = [
-             'subject' => $request->subject,
-             'message' => $request->message,
-         ];
-     
-         // Send email to active employees
-         $employees = Employee::where('status', 'active')->get();
-         foreach ($employees as $employee) {
-             // Pass the data array to the Mailable
-             Mail::to($employee->email)->send(new MessageSent($data));
-         }
-     
-         return redirect()->route('admin.message.index')->with('success', 'Message sent successfully.');
-     }
-     
+    public function store(Request $request)
+    {
+        // Validate the incoming request
+        $request->validate([
+            'subject' => 'required|string|max:255',
+            'message' => 'required|string',
+        ]);
 
+        Message::insert([
 
+            'subject' => $request->subject,
+            'message' => $request->message,
+        ]);
 
+        // Prepare the data
+        $data = [
+            'subject' => $request->subject,
+            'message' => $request->message,
+        ];
+
+        // Send email to active employees
+        $employees = Employee::where('status', 'active')->get();
+        foreach ($employees as $employee) {
+            // Pass the data array to the Mailable
+            Mail::to($employee->email)->send(new MessageSent($data));
+        }
+
+        return redirect()->route('admin.message.index')->with('success', 'Message sent successfully.');
+    }
 
     /**
      * Display the specified resource.
@@ -84,49 +86,30 @@ class MessageController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'subject' => 'required|string|max:255', // Subject is required and should be a string with a max length
-            'message' => 'required|string', // Message is required and should be a string
-            'file' => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx|max:2048',
-            'status' => 'nullable|in:active,inactive', // Status is required and should be either 'active' or 'inactive'
+            'subject' => 'required|string|max:255',
+            'message' => 'required|string',
         ]);
 
         $item = Message::findOrFail($id);
-
-        // Define upload paths
-        $uploadedFiles = [];
-
-        // Array of files to upload
-        $files = [
-            'file' => $request->file('file'),
-        ];
-
-        foreach ($files as $key => $file) {
-            if (!empty($file)) {
-                $filePath = 'message/' . $key;
-                $oldFile = $item->$key ?? null;
-
-                if ($oldFile) {
-                    Storage::delete("public/" . $oldFile);
-                }
-                $uploadedFiles[$key] = newUpload($file, $filePath);
-                if ($uploadedFiles[$key]['status'] === 0) {
-                    return redirect()->back()->with('error', $uploadedFiles[$key]['error_message']);
-                }
-            } else {
-                $uploadedFiles[$key] = ['status' => 0];
-            }
-        }
-
         // Update the item with new values
         $item->update([
 
             'subject' => $request->subject,
             'message' => $request->message,
-            'status' => $request->status,
-
-            'file' => $uploadedFiles['file']['status'] == 1 ? $uploadedFiles['file']['file_path'] : $item->file,
 
         ]);
+
+        // Prepare the data
+        $data = [
+            'subject' => $request->subject,
+            'message' => $request->message,
+        ];
+
+        // Send email to active employees
+        $employees = Employee::where('status', 'active')->get();
+        foreach ($employees as $employee) {
+            Mail::to($employee->email)->send(new MessageSent($data));
+        }
 
         return redirect()->route('admin.message.index')->with('success', 'Message again sent Successfully!!');
     }
@@ -138,19 +121,22 @@ class MessageController extends Controller
     {
         $item = Message::findOrFail($id);
 
-        $files = [
-            'file' => $item->file,
-        ];
-        foreach ($files as $key => $file) {
-            if (!empty($file)) {
-                $oldFile = $item->$key ?? null;
-                if ($oldFile) {
-                    Storage::delete("public/" . $oldFile);
-                }
-            }
-        }
         $item->delete();
 
         return redirect()->route('admin.message.index')->with('success', 'Message Delete Successfully!!');
+    }
+
+    public function bulkDestroy(Request $request)
+    {
+        $ids = $request->input('ids');
+
+        if (empty($ids)) {
+            return response()->json(['success' => false, 'message' => 'No IDs provided.']);
+        }
+
+        // Delete the messages
+        Message::whereIn('id', $ids)->delete();
+
+        return response()->json(['success' => true]);
     }
 }

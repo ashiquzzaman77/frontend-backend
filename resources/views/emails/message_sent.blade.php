@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -75,7 +74,7 @@
         <div class="content">
 
             <p><strong>Subject:</strong> {{ $data['subject'] }}</p>
-            
+
             <p>Dear Employee</p>
             <p>{!! $data['message'] !!}</p> <!-- Replace with actual message content -->
             <p>Please visit our <a href="https://companywebsite.com">Company</a>.</p>
