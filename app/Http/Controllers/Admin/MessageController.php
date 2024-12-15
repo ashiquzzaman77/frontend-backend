@@ -32,29 +32,34 @@ class MessageController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        // Validate the incoming request
-        $request->validate([
-            'subject' => 'required|string|max:255',
-            'message' => 'required|string',
-        ]);
 
-        // Create the message
-        $message = Message::create([
-            'subject' => $request->subject,
-            'message' => $request->message,
-        ]);
+     public function store(Request $request)
+     {
+         // Validate the incoming request
+         $request->validate([
+             'subject' => 'required|string|max:255',
+             'message' => 'required|string',
+         ]);
+     
+         // Prepare the data
+         $data = [
+             'subject' => $request->subject,
+             'message' => $request->message,
+         ];
+     
+         // Send email to active employees
+         $employees = Employee::where('status', 'active')->get();
+         foreach ($employees as $employee) {
+             // Pass the data array to the Mailable
+             Mail::to($employee->email)->send(new MessageSent($data));
+         }
+     
+         return redirect()->route('admin.message.index')->with('success', 'Message sent successfully.');
+     }
+     
 
-        // Send email to active employees
-        $employees = Employee::where('status', 'active')->get();
-        foreach ($employees as $employee) {
-            // Pass subject and message content to the Mailable
-            Mail::to($employee->email)->send(new MessageSent($message->subject, $message->message));
-        }
 
-        return redirect()->route('admin.message.index')->with('success', 'Message sent successfully.');
-    }
+
 
     /**
      * Display the specified resource.

@@ -58,7 +58,7 @@
                         </div>
 
                         <!-- File Upload Field -->
-                        <div class="col-6 col-lg-3 mb-3">
+                        {{-- <div class="col-6 col-lg-3 mb-3">
                             <label for="" class="mb-2">Upload File</label>
                             <input type="file" class="form-control" name="file">
 
@@ -66,10 +66,10 @@
                             @error('file')
                                 <div class="text-danger mt-2">{{ $message }}</div>
                             @enderror
-                        </div>
+                        </div> --}}
 
                         <!-- Status Field -->
-                        <div class="col-6 col-lg-3 mb-3">
+                        {{-- <div class="col-6 col-lg-3 mb-3">
                             <label for="" class="mb-2">Status</label>
                             <select name="status" class="form-select">
                                 <option selected disabled>Choose Option...</option>
@@ -82,12 +82,11 @@
                             @error('status')
                                 <div class="text-danger mt-2">{{ $message }}</div>
                             @enderror
-                        </div>
+                        </div> --}}
 
                         <!-- Submit Button -->
                         <div class="col-12 col-lg-12 mb-3">
-                            <button type="submit" class="btn btn-outline-primary rounded-0 px-3 float-end">Data
-                                Submit</button>
+                            <button type="submit" class="btn btn-outline-primary rounded-0 px-3 float-end">Data Submit</button>
                         </div>
 
                     </div>

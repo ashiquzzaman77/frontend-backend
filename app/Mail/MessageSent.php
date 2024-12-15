@@ -4,60 +4,34 @@ namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
-use Illuminate\Mail\Mailables\Content;
-use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
 class MessageSent extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $subjectMessage;
-    public $bodyMessage;
+    public $data;  // The data array
 
     /**
-     * Create a new message instance.
+     * Create a new data instance.
      *
-     * @param string $subject
-     * @param string $message
+     * @param array $data
+     * @return void
      */
-    public function __construct($subject, $message)
+    public function __construct(array $data)
     {
-        // Assign the passed values to the class properties
-        $this->subjectMessage = $subject;
-        $this->bodyMessage = $message;
+        $this->data = $data;  // Assign the data array
     }
 
     /**
-     * Get the message envelope.
-     */
-    public function envelope(): Envelope
-    {
-        return new Envelope(
-            subject: $this->subjectMessage, // Dynamic subject
-        );
-    }
-
-    /**
-     * Get the message content definition.
-     */
-    public function content(): Content
-    {
-        return new Content(
-            view: 'emails.message_sent', // Your email view
-            with: [
-                'message' => $this->bodyMessage, // Dynamic message body
-            ]
-        );
-    }
-
-    /**
-     * Get the attachments for the message.
+     * Build the message.
      *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
+     * @return $this
      */
-    public function attachments(): array
+    public function build()
     {
-        return [];
+        return $this->subject('Company Hr')
+            ->view('emails.message_sent', ['data' => $this->data]);
     }
 }
+
