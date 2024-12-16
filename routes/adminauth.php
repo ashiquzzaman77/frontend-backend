@@ -156,7 +156,7 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
 
     //Backup
     Route::get('/backup', [AdminController::class, 'downloadBackup'])->name('meta.download');
+
+    //bulkDestroy
     Route::post('/messages/bulk-destroy', [MessageController::class, 'bulkDestroy'])->name('message.bulkDestroy');
 });
-
-

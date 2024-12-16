@@ -26,19 +26,6 @@
             <div class="card p-3">
 
                 <div class="card-body">
-                    <!--begin::Alerts-->
-                    @if (session('success'))
-                        <div class="alert alert-success">
-                            {{ session('success') }}
-                        </div>
-                    @endif
-
-                    @if (session('error'))
-                        <div class="alert alert-danger">
-                            {{ session('error') }}
-                        </div>
-                    @endif
-                    <!--end::Alerts-->
 
                     <!--begin::Input group-->
                     <div class="row">
@@ -115,19 +102,7 @@
                                 placeholder="Enter the Address Line Two">
                         </div>
 
-                        {{-- <div class="col-lg-3 mb-3">
-                            <label for="seo_keywords" class="mb-2">SEO Keywords</label>
-                            <input id="seo_keywords" class="form-control" type="text" name="seo_keywords"
-                                value="{{ old('seo_keywords', optional($setting->first())->seo_keywords) }}"
-                                placeholder="Enter the SEO Keywords">
-                        </div>
 
-                        <div class="col-lg-3 mb-3">
-                            <label for="seo_description" class="mb-2">SEO Description</label>
-                            <input id="seo_description" class="form-control" type="text" name="seo_description"
-                                value="{{ old('seo_description', optional($setting->first())->seo_description) }}"
-                                placeholder="Enter the SEO Description">
-                        </div> --}}
 
                         <div class="col-lg-3 mb-3">
                             <label for="social_facebook" class="mb-2">Social Facebook</label>
@@ -179,20 +154,26 @@
 
                         <div class="col-lg-3 mb-3">
                             <label for="site_logo" class="mb-2">Site Logo</label>
-                            <input id="site_logo" type="file" class="form-control" name="site_logo">
+                            <input id="site_logo" type="file" class="form-control" name="site_logo"
+                                onchange="previewImage('site_logo', 'logo_preview')">
 
-                            <img src="{{ !empty(optional($setting->first())->site_logo) && file_exists(public_path('storage/' . optional($setting->first())->site_logo)) ? asset('storage/' . optional($setting->first())->site_logo) : asset('frontend/images/no-logo(217-55).jpg') }}"
-                            style="width: 100px;height:100px" class="mt-2" alt="">
+                            <!-- Preview of the site logo -->
+                            <img id="logo_preview"
+                                src="{{ !empty(optional($setting->first())->site_logo) && file_exists(public_path('storage/' . optional($setting->first())->site_logo)) ? asset('storage/' . optional($setting->first())->site_logo) : asset('frontend/images/no-logo(217-55).jpg') }}"
+                                style="width: 100px; height: 100px" class="mt-2" alt="Logo Preview">
                         </div>
 
                         <div class="col-lg-3 mb-3">
                             <label for="site_favicon" class="mb-2">Site Favicon</label>
-                            <input id="site_favicon" type="file" class="form-control" name="site_favicon">
+                            <input id="site_favicon" type="file" class="form-control" name="site_favicon"
+                                onchange="previewImage('site_favicon', 'favicon_preview')">
 
-                            <img src="{{ !empty(optional($setting->first())->site_favicon) && file_exists(public_path('storage/' . optional($setting->first())->site_favicon)) ? asset('storage/' . optional($setting->first())->site_favicon) : asset('frontend/images/no-logo(217-55).jpg') }}"
-                            style="width: 100px;height:100px" class="mt-2" alt="">
-
+                            <!-- Preview of the site favicon -->
+                            <img id="favicon_preview"
+                                src="{{ !empty(optional($setting->first())->site_favicon) && file_exists(public_path('storage/' . optional($setting->first())->site_favicon)) ? asset('storage/' . optional($setting->first())->site_favicon) : asset('frontend/images/no-logo(217-55).jpg') }}"
+                                style="width: 100px; height: 100px" class="mt-2" alt="Favicon Preview">
                         </div>
+
 
 
 
@@ -209,5 +190,22 @@
         </form>
 
     </div>
+
+    <script>
+        function previewImage(inputId, previewId) {
+            var file = document.getElementById(inputId).files[0];
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+                // Set the image source to the selected file
+                document.getElementById(previewId).src = e.target.result;
+            };
+
+            // If a file is selected, read it
+            if (file) {
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
 
 </x-admin-app-layout>

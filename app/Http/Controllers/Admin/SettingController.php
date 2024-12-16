@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\Setting;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
 
 class SettingController extends Controller
@@ -23,26 +23,26 @@ class SettingController extends Controller
         $currentSetting = Setting::first();
 
         $dataToUpdateOrCreate = [
-            'site_name'        => $request->site_name,
-            'site_slogan'      => $request->site_slogan,
-            'primary_email'    => $request->primary_email,
-            'support_email'    => $request->support_email,
-            'sales_email'      => $request->sales_email,
-            'primary_phone'    => $request->primary_phone,
-            'secondary_phone'  => $request->secondary_phone,
-            'whatsapp'         => $request->whatsapp,
-            'skype'            => $request->skype,
+            'site_name' => $request->site_name,
+            'site_slogan' => $request->site_slogan,
+            'primary_email' => $request->primary_email,
+            'support_email' => $request->support_email,
+            'sales_email' => $request->sales_email,
+            'primary_phone' => $request->primary_phone,
+            'secondary_phone' => $request->secondary_phone,
+            'whatsapp' => $request->whatsapp,
+            'skype' => $request->skype,
             'address_line_one' => $request->address_line_one,
             'address_line_two' => $request->address_line_two,
-            'system_timezone'  => $request->system_timezone,
+            'system_timezone' => $request->system_timezone,
             'maintenance_mode' => $request->maintenance_mode,
-            'seo_keywords'     => $request->seo_keywords,
-            'seo_description'  => $request->seo_description,
-            'social_facebook'  => $request->social_facebook,
-            'social_twitter'   => $request->social_twitter,
+            'seo_keywords' => $request->seo_keywords,
+            'seo_description' => $request->seo_description,
+            'social_facebook' => $request->social_facebook,
+            'social_twitter' => $request->social_twitter,
             'social_instagram' => $request->social_instagram,
-            'social_linkedin'  => $request->social_linkedin,
-            'social_youtube'   => $request->social_youtube,
+            'social_linkedin' => $request->social_linkedin,
+            'social_youtube' => $request->social_youtube,
             'social_pinterest' => $request->social_pinterest,
             'default_language' => $request->default_language,
             'default_currency' => $request->default_currency,
@@ -78,10 +78,7 @@ class SettingController extends Controller
             }
         }
 
-
         $setting = Setting::updateOrCreate([], $dataToUpdateOrCreate);
-
-        // $toastrMessage = $setting->wasRecentlyCreated ? 'Setting created successfully' : 'Setting updated successfully';
 
         return redirect()->route('admin.settings.index')->with('success', 'Data Created Or Update Successfully!!');
     }
