@@ -45,13 +45,27 @@
                             <!--begin::Table row-->
                             @foreach ($users as $key => $user)
                                 <tr>
-
                                     <td>{{ $key + 1 }}</td>
                                     <td>{{ $user->name }}</td>
                                     <td>{{ $user->email }}</td>
+
                                     <td>
                                         @forelse ($user->roles as $role)
-                                            <span class="badge badge-pill bg-danger">{{ $role->name }}</span>
+                                            @php
+                                                // Define role colors based on the role name
+                                                $roleColors = [
+                                                    'Super Admin' => 'bg-danger', // Red for Admin
+                                                    'Admin' => 'bg-info', // Red for Admin
+                                                    'Hr' => 'bg-warning', // Yellow for Editor
+                                                    'Employee' => 'bg-success',
+                                                    'Manager' => 'bg-dark', // Blue for Manager
+                                                ];
+
+                                                // Get the color class based on the role name, or fallback to a default color
+                                                $roleClass = $roleColors[$role->name] ?? 'bg-secondary'; // 'bg-secondary' as default for unknown roles
+                                            @endphp
+                                            <span
+                                                class="badge badge-pill {{ $roleClass }}">{{ $role->name }}</span>
                                         @empty
                                             <span class="badge badge-pill bg-primary">No roles assigned</span>
                                         @endforelse
@@ -61,7 +75,7 @@
                                         @if ($user->status == 'active')
                                             <span class="badge bg-success">Active</span>
                                         @else
-                                            <span class="badge bg-danger">inactive</span>
+                                            <span class="badge bg-danger">Inactive</span>
                                         @endif
                                     </td>
 
@@ -73,34 +87,21 @@
                                         @endif
                                     </td>
 
-
                                     <td>
-
-                                        {{-- @if (Auth::guard('admin')->user()->can('status.admin'))
-                                            @if ($user->status == 1)
-                                                <a href="{{ route('admin.inactive', $user->id) }}" title="Inactive"><i
-                                                        class="bi bi-hand-thumbs-down text-warning fs-3"></i></a>
-                                            @else
-                                                <a href="{{ route('admin.active', $user->id) }}" title="Active"><i
-                                                        class="bi bi-hand-thumbs-up text-dark fs-3"></i></a>
-                                            @endif
-                                        @endif --}}
-
-                                        {{-- @if (Auth::guard('admin')->user()->can('edit.admin')) --}}
+                                        {{-- Edit Permission --}}
                                         <a href="{{ route('edit.admin.permission', $user->id) }}" class=""
-                                            title="Edit"><i
-                                                class="fa-solid fa-pen-to-square fs-6 text-primary"></i></a>
-                                        {{-- @endif --}}
+                                            title="Edit">
+                                            <i class="fa-solid fa-pen-to-square fs-6 text-primary"></i>
+                                        </a>
 
-                                        {{-- @if (Auth::guard('admin')->user()->can('delete.admin')) --}}
-                                        <a href="{{ route('delete.admin', $user->id) }}" class=""
-                                            title="Delete"><i class="fa-solid fa-trash fs-6 text-danger"></i></a>
-                                        {{-- @endif --}}
-
+                                        {{-- Delete Permission --}}
+                                        <a href="{{ route('delete.admin', $user->id) }}" class="" title="Delete">
+                                            <i class="fa-solid fa-trash fs-6 text-danger"></i>
+                                        </a>
                                     </td>
-
                                 </tr>
                             @endforeach
+
                             <!--end::Table row-->
                         </tbody>
 

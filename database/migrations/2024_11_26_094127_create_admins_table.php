@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
 
             $table->string('name')->nullable();
+            
             $table->string('email')->unique()->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
@@ -22,6 +23,7 @@ return new class extends Migration
             $table->string('company_name')->nullable();
             $table->string('address')->nullable();
             $table->string('phone')->nullable();
+
             $table->string('designation')->nullable();
             $table->string('status')->default('active');
             $table->string('photo')->nullable();

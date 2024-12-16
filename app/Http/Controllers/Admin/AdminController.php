@@ -4,16 +4,15 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
-use Spatie\Permission\Models\Role;
-
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Validation\Rules;
+use Spatie\Permission\Models\Role;
 
 class AdminController extends Controller
 {
@@ -32,8 +31,22 @@ class AdminController extends Controller
     }
 
     //Admin DashBoard
+
+    // public function dashboard()
+    // {
+    //     return view('admin.dashboard');
+    // }
+
     public function dashboard()
     {
+
+        $admin = Auth::guard('admin')->user();
+
+        if ($admin && $admin->status !== 'active') {
+            Auth::guard('admin')->logout();
+            return redirect('/admin/login')->with('error', 'Your account is inactive & Please wait Admin approve your account.');
+        }
+
         return view('admin.dashboard');
     }
 
